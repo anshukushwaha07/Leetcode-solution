@@ -63,3 +63,35 @@ int knapsack(int wt[],int val[],int w,int n){
 }
 
 
+// 0 1 knapsack top down approach   
+
+int knapsack(int wt[],int val[],int w,int n){
+
+    int dp[n+1][w+1];
+
+    // initializing the first row and first column to 0
+    for(int i=0;i<=n;i++){
+        for(int j=0;j<=w;j++){
+            if(i==0 || j==0){
+                dp[i][j]=0;
+            }
+        }
+    }
+
+    // filling the dp array
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=w;j++){
+            if(wt[i-1]<=j){
+                dp[i][j] = max(
+                    val[i-1]+dp[i-1][j-wt[i-1]], // including
+                    dp[i-1][j] // excluding
+                );
+            }
+            else{
+                dp[i][j] = dp[i-1][j]; // cannot include the item
+            }
+        }
+    }
+
+    return dp[n][w]; // maximum value that can be obtained with n items and weight capacity w
+}
